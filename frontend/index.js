@@ -16,14 +16,43 @@ async function fetchPokemon() {
   }
 }
 
-// Card component
 function PokemonCard(props) {
   return React.createElement(
     "div",
-    { className: "" },
-    React.createElement("img", { src: props.image, alt: props.name }),
-    React.createElement("h2", null, props.name),
-    React.createElement("p", null, `Type: ${props.types}`)
+    {
+      className:
+        "w-48 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700",
+    },
+    React.createElement(
+      "a",
+      { href: "#" },
+      React.createElement(
+        "div",
+        { className: "flex justify-center" },
+        React.createElement("img", {
+          className: "rounded-t-lg h-full",
+          src: props.image,
+          alt: props.name,
+        })
+      )
+    ),
+    React.createElement(
+      "div",
+      { className: "p-5" },
+      React.createElement(
+        "h2",
+        {
+          className:
+            "mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white",
+        },
+        props.name
+      ),
+      React.createElement(
+        "p",
+        { className: "mb-3 font-normal text-gray-700 dark:text-gray-400" },
+        `Type: ${props.types}`
+      )
+    )
   );
 }
 
@@ -39,7 +68,7 @@ function PokemonList() {
 
   return React.createElement(
     "div",
-    { className: "flex flex-wrap justify-center" },
+    { className: "flex flex-wrap gap-2 p-8 justify-center" },
     pokemonData.map((pokemon) =>
       React.createElement(PokemonCard, {
         key: pokemon.id,
@@ -61,8 +90,10 @@ function App() {
       { className: "" },
       React.createElement(
         "h1",
-        { className: "text-3xl text-center font-bold underline" },
-        "Pokedex"
+        {
+          className: "text-3xl font-bold dark:text-gray-700 text-center mt-10",
+        },
+        "Pokedex List"
       )
     ),
     React.createElement(PokemonList, null)
