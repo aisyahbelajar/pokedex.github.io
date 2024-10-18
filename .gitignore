@@ -1,0 +1,10 @@
+# Node.js dependencies
+node_modules/
+
+# Build files
+frontend/src/output.css
+
+# Lock file (optional, based on team decision)
+package-lock.json
+
+
