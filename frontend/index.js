@@ -21,8 +21,9 @@ function PokemonCard(props) {
     "div",
     {
       className:
-        "w-48 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700",
+        "card w-60 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700",
     },
+
     React.createElement(
       "a",
       { href: "#" },
@@ -30,7 +31,7 @@ function PokemonCard(props) {
         "div",
         { className: "flex justify-center" },
         React.createElement("img", {
-          className: "rounded-t-lg h-full",
+          className: "rounded-t-lg h-60 w-auto",
           src: props.image,
           alt: props.name,
         })
@@ -38,19 +39,62 @@ function PokemonCard(props) {
     ),
     React.createElement(
       "div",
-      { className: "p-5" },
+      { className: "px-5 pb-5" },
       React.createElement(
         "h2",
         {
           className:
-            "mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white",
+            "pokemon-name mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center capitalize",
         },
         props.name
       ),
       React.createElement(
-        "p",
-        { className: "mb-3 font-normal text-gray-700 dark:text-gray-400" },
-        `Type: ${props.types}`
+        "div",
+        {
+          className: "grid grid-cols-3 grid-rows-2 items-center gap-1",
+        },
+        React.createElement(
+          "p",
+          {
+            className:
+              "align-middle font-normal text-gray-700 dark:text-gray-400",
+          },
+          `Type:`
+        ),
+        React.createElement(
+          "p",
+          {
+            className: `font-normal text-center text-gray-800 dark:text-gray-300 bg-pink-700 hover:bg-cyan-600 rounded-lg capitalize w-auto inline-block p-1 ${
+              props.types2 ? "" : "col-span-2"
+            }`,
+          },
+          `${props.types1}`
+        ),
+        props.types2 &&
+          React.createElement(
+            "p",
+            {
+              className:
+                "font-normal text-center text-gray-800 dark:text-gray-300 bg-yellow-700 hover:bg-cyan-600 rounded-lg capitalize w-auto inline-block p-1",
+            },
+            `${props.types2}`
+          ),
+        React.createElement(
+          "p",
+          {
+            className:
+              "align-middle font-normal text-gray-700 dark:text-gray-400",
+          },
+          `Abilities:`
+        ),
+        React.createElement(
+          "p",
+          {
+            className:
+              "col-span-2 font-normal text-gray-700 dark:text-gray-400 capitalize p-1",
+          },
+          `${props.abilities}`
+        )
       )
     )
   );
@@ -68,12 +112,14 @@ function PokemonList() {
 
   return React.createElement(
     "div",
-    { className: "flex flex-wrap gap-2 p-8 justify-center" },
+    { className: "pokemon-list flex flex-wrap gap-2 p-8 justify-center" },
     pokemonData.map((pokemon) =>
       React.createElement(PokemonCard, {
         key: pokemon.id,
         name: pokemon.name,
-        types: pokemon.types.join("/"),
+        types1: pokemon.types[0],
+        types2: pokemon.types[1],
+        abilities: pokemon.abilities.join(" / "),
         image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
       })
     )
@@ -103,6 +149,31 @@ function App() {
 // Function to render the app
 function renderApp() {
   ReactDOM.render(React.createElement(App), document.getElementById("root"));
+
+  const searchInput = document.getElementById("search-navbar");
+  const header = document.getElementById("header");
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+    const pokemonCards = document.querySelectorAll(".card");
+
+    pokemonCards.forEach((card) => {
+      const pokemonName = card
+        .querySelector(".pokemon-name")
+        .textContent.toLowerCase();
+
+      if (pokemonName.includes(searchTerm) && searchTerm !== "") {
+        card.style.display = "block";
+        header.style.display = "block";
+      }
+
+      if (pokemonName.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+        header.style.display = "none";
+      }
+    });
+  });
 }
 
 // Initial render
